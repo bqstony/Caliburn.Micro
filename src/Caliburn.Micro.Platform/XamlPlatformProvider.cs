@@ -1,6 +1,7 @@
 ﻿namespace Caliburn.Micro {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
 #if WINDOWS_UWP
     using System.Reflection;
@@ -194,14 +195,13 @@
         /// <returns>
         /// An <see cref="Action" /> to close the view model.
         /// </returns>
-        /// <exception cref="System.NotImplementedException"></exception>
+        /// <exception cref="System.NotImplementedException"></exception>        
         public virtual System.Action GetViewCloseAction(object viewModel, ICollection<object> views, bool? dialogResult) {
             var child = viewModel as IChild;
             if (child != null) {
                 var conductor = child.Parent as IConductor;
                 if (conductor != null) {
-                    Console.WriteLine("todo CloseItem");
-                    //return () => conductor.CloseItem(viewModel);
+                    return () => conductor.CloseItemAsync(viewModel, CancellationToken.None);
                 }
             }
 

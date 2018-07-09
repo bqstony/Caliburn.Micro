@@ -9,6 +9,7 @@
     using System.Linq;
     using System.Windows.Navigation;
     using System.Threading;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// A service that manages windows.
@@ -302,7 +303,7 @@
                 }
             }
 
-            void Closed(object sender, EventArgs e) {
+            async void Closed(object sender, EventArgs e) {
                 view.Closed -= Closed;
                 view.Closing -= Closing;
 
@@ -313,7 +314,7 @@
                 var deactivatable = (IDeactivate)model;
 
                 deactivatingFromView = true;
-                deactivatable.DeactivateAsync(true);
+                await deactivatable.DeactivateAsync(true);
                 deactivatingFromView = false;
             }
 
@@ -341,12 +342,7 @@
                 var guard = (IGuardClose)model;
 
                 var canClose = await guard.CanCloseAsync(CancellationToken.None);
-
-                Execute.OnUIThread(() => {
-                    if (canClose)
-                        view.Close();
-                });
-
+                
                 e.Cancel = !canClose;
             }
         }
