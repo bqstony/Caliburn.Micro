@@ -200,7 +200,8 @@
             if (child != null) {
                 var conductor = child.Parent as IConductor;
                 if (conductor != null) {
-                    return () => conductor.CloseItem(viewModel);
+                    Console.WriteLine("todo CloseItem");
+                    //return () => conductor.CloseItem(viewModel);
                 }
             }
 
